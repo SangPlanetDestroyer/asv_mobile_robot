@@ -8,7 +8,7 @@
       <background>0.7 0.7 0.7 1</background>
     </scene>
 
-    <!-- Ground plane: 60 m long x 30 m wide. -->
+    <!-- White ground plane: 60 m long x 30 m wide. -->
     <model name="ground_plane">
       <static>true</static>
       <link name="ground_link">
@@ -27,43 +27,77 @@
               <size>60 30</size>
             </plane>
           </geometry>
-        </visual>
-      </link>
-    </model>
-
-    <!-- Field image, raised by 1 mm to avoid z-fighting with the ground. -->
-    <model name="field_image">
-      <static>true</static>
-      <link name="field_image_link">
-        <visual name="field_image_visual">
-          <pose>0 0 0.001 0 0 0</pose>
-          <geometry>
-            <plane>
-              <normal>0 0 1</normal>
-              <size>60 30</size>
-            </plane>
-          </geometry>
           <material>
             <diffuse>1 1 1 1</diffuse>
+            <ambient>1 1 1 1</ambient>
             <specular>0 0 0 1</specular>
-            <!-- Gazebo Harmonic / Gazebo Sim material. -->
-            <pbr>
-              <metal>
-                <albedo_map>file:///home/ekonawa/workspace/asv_mobile_robot/images/gambar_lapangan.png</albedo_map>
-                <metalness>0.0</metalness>
-                <roughness>1.0</roughness>
-              </metal>
-            </pbr>
           </material>
         </visual>
       </link>
     </model>
 
+    <!-- Brown perimeter walls for the two adjacent fields. The wall at x=0
+         is shared by both fields and is defined only once. -->
+    <model name="field_walls">
+      <static>true</static>
+      <link name="walls_link">
+        <visual name="wall_top">
+          <pose>0 14.75 0.60 0 0 0</pose>
+          <geometry><box><size>60 0.50 1.20</size></box></geometry>
+          <material><diffuse>0.45 0.20 0.06 1</diffuse><ambient>0.14 0.05 0.01 1</ambient></material>
+        </visual>
+        <collision name="wall_top_collision">
+          <pose>0 14.75 0.60 0 0 0</pose>
+          <geometry><box><size>60 0.50 1.20</size></box></geometry>
+        </collision>
+
+        <visual name="wall_bottom">
+          <pose>0 -14.75 0.60 0 0 0</pose>
+          <geometry><box><size>60 0.50 1.20</size></box></geometry>
+          <material><diffuse>0.45 0.20 0.06 1</diffuse><ambient>0.14 0.05 0.01 1</ambient></material>
+        </visual>
+        <collision name="wall_bottom_collision">
+          <pose>0 -14.75 0.60 0 0 0</pose>
+          <geometry><box><size>60 0.50 1.20</size></box></geometry>
+        </collision>
+
+        <visual name="wall_left_outer">
+          <pose>-29.75 0 0.60 0 0 0</pose>
+          <geometry><box><size>0.50 30 1.20</size></box></geometry>
+          <material><diffuse>0.45 0.20 0.06 1</diffuse><ambient>0.14 0.05 0.01 1</ambient></material>
+        </visual>
+        <collision name="wall_left_outer_collision">
+          <pose>-29.75 0 0.60 0 0 0</pose>
+          <geometry><box><size>0.50 30 1.20</size></box></geometry>
+        </collision>
+
+        <!-- One shared divider; do not duplicate it for the two fields. -->
+        <visual name="wall_center_shared">
+          <pose>0 0 0.60 0 0 0</pose>
+          <geometry><box><size>0.50 30 1.20</size></box></geometry>
+          <material><diffuse>0.45 0.20 0.06 1</diffuse><ambient>0.14 0.05 0.01 1</ambient></material>
+        </visual>
+        <collision name="wall_center_shared_collision">
+          <pose>0 0 0.60 0 0 0</pose>
+          <geometry><box><size>0.50 30 1.20</size></box></geometry>
+        </collision>
+
+        <visual name="wall_right_outer">
+          <pose>29.75 0 0.60 0 0 0</pose>
+          <geometry><box><size>0.50 30 1.20</size></box></geometry>
+          <material><diffuse>0.45 0.20 0.06 1</diffuse><ambient>0.14 0.05 0.01 1</ambient></material>
+        </visual>
+        <collision name="wall_right_outer_collision">
+          <pose>29.75 0 0.60 0 0 0</pose>
+          <geometry><box><size>0.50 30 1.20</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+
     <!--
       Physical objects that follow the markers in gambar_lapangan.png.
-      The image is mapped over x=[-30, 30] and y=[-15, 15], with its
-      horizontal centre at the world origin. All objects are static so
-      their positions stay aligned with the reference image.
+      The reference image is kept in images/ for documentation only. All
+      objects are static and use the same x/y mapping as that reference.
     -->
     <model name="field_boxes">
       <static>true</static>

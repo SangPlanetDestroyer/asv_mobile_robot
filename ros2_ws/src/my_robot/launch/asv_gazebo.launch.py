@@ -52,11 +52,11 @@ def generate_launch_description():
             "-file",
             str(urdf_path),
             "-x",
-            "-4.47",
+            "40.0",
             "-y",
-            "-12.82",
+            "31.0",
             "-z",
-            "0.65",
+            "2.0",
         ],
     )
 

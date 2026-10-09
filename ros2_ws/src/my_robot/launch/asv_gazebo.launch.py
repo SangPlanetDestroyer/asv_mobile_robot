@@ -57,6 +57,8 @@ def generate_launch_description():
             "-11.00",
             "-z",
             "0.06",
+            "-Y",
+            "1.5708",
         ],
     )
 

@@ -22,6 +22,11 @@ fi
 unset AMENT_PREFIX_PATH COLCON_PREFIX_PATH COLCON_CURRENT_PREFIX
 source "$ros_setup"
 
+# Keep the simulator and local monitoring tools on the same ROS 2 Jazzy domain.
+export ROS_DOMAIN_ID="${ROS_DOMAIN_ID:-0}"
+export ROS_AUTOMATIC_DISCOVERY_RANGE="${ROS_AUTOMATIC_DISCOVERY_RANGE:-LOCALHOST}"
+unset ROS_LOCALHOST_ONLY
+
 # Cloudflare WARP dapat mengambil alih route multicast Gazebo.
 export GZ_IP="${GZ_IP:-127.0.0.1}"
 export GZ_PARTITION="${GZ_PARTITION:-asv_debug}"

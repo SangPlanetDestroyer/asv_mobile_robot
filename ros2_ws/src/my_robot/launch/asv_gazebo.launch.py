@@ -31,7 +31,7 @@ def generate_launch_description():
                 [FindPackageShare("ros_gz_sim"), "launch", "gz_sim.launch.py"]
             )
         ),
-        launch_arguments={"gz_args": f"-r {world_path}"}.items(),
+            launch_arguments={"gz_args": f"-r -s --headless-rendering {world_path}"}.items(),
     )
 
     robot_state_publisher = Node(

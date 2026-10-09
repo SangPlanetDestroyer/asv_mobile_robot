@@ -1,8 +1,9 @@
+import os
 from pathlib import Path
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
+from launch.actions import IncludeLaunchDescription, SetEnvironmentVariable
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import PathJoinSubstitution
 from launch_ros.actions import Node
@@ -16,6 +17,13 @@ def generate_launch_description():
     world_path = package_share / "worlds" / "asv_field.world"
 
     robot_description = urdf_path.read_text(encoding="utf-8")
+    gazebo_resource_path = SetEnvironmentVariable(
+        name="GZ_SIM_RESOURCE_PATH",
+        value=(
+            f"{package_share.parent}:"
+            f"{os.environ.get('GZ_SIM_RESOURCE_PATH', '')}"
+        ),
+    )
 
     gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -80,5 +88,5 @@ def generate_launch_description():
     ]
 
     return LaunchDescription(
-        [gz_sim, robot_state_publisher, spawn_robot, *bridge_nodes]
+        [gazebo_resource_path, gz_sim, robot_state_publisher, spawn_robot, *bridge_nodes]
     )

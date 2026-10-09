@@ -34,6 +34,18 @@ source install/setup.zsh
 ros2 launch my_robot asv_gazebo.launch.py
 ```
 
+Atau jalankan semuanya melalui script runner:
+
+```zsh
+./scripts/run_asv_robot.zsh
+```
+
+Argumen tambahan akan diteruskan ke launch file, misalnya:
+
+```zsh
+./scripts/run_asv_robot.zsh --show-args
+```
+
 Jika `ros2 launch` menghasilkan error `invalid choice: 'launch'`, pasang ekstensi
 launch ROS 2 terlebih dahulu:
 

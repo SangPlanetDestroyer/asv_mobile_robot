@@ -17,6 +17,25 @@ Jalankan dari root repository setelah environment ROS 2 Jazzy di-source:
 ./scripts/run_asv_field.zsh
 ```
 
+## Robot ROS 2
+
+Model mobile robot hasil migrasi berada di `ros2_ws/src/my_robot`. Model ini
+memakai dua roda penggerak, dua caster, IMU, dan kamera yang menghadap ke depan.
+Marker AprilTag/ArUco sudah dihapus dari model.
+
+Build dan jalankan simulasi dengan:
+
+```bash
+cd ros2_ws
+source /opt/ros/jazzy/setup.bash
+colcon build --packages-select my_robot
+source install/setup.bash
+ros2 launch my_robot asv_gazebo.launch.py
+```
+
+Topic kamera yang tersedia adalah `/camera/image_raw` dan
+`/camera/camera_info`. Robot menerima perintah gerak melalui `/cmd_vel`.
+
 Jika GUI masih kosong setelah percobaan sebelumnya, jalankan kembali dengan
 script yang sama:
 

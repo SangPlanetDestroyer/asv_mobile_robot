@@ -1,0 +1,286 @@
+<?xml version="1.0" ?>
+<sdf version="1.9">
+  <world name="asv_field">
+    <gravity>0 0 -9.81</gravity>
+
+    <scene>
+      <ambient>0.8 0.8 0.8 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+    </scene>
+
+    <!-- White ground plane: 60 m long x 30 m wide. -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="ground_link">
+        <collision name="ground_collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>60 30</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="ground_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>60 30</size>
+            </plane>
+          </geometry>
+          <material>
+            <diffuse>1 1 1 1</diffuse>
+            <ambient>1 1 1 1</ambient>
+            <specular>0 0 0 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Brown perimeter walls for the two adjacent fields. The wall at x=0
+         is shared by both fields and is defined only once. -->
+    <model name="field_walls">
+      <static>true</static>
+      <link name="walls_link">
+        <visual name="wall_top">
+          <pose>0 14.75 0.60 0 0 0</pose>
+          <geometry><box><size>60 0.50 1.20</size></box></geometry>
+          <material><diffuse>0.45 0.20 0.06 1</diffuse><ambient>0.14 0.05 0.01 1</ambient></material>
+        </visual>
+        <collision name="wall_top_collision">
+          <pose>0 14.75 0.60 0 0 0</pose>
+          <geometry><box><size>60 0.50 1.20</size></box></geometry>
+        </collision>
+
+        <visual name="wall_bottom">
+          <pose>0 -14.75 0.60 0 0 0</pose>
+          <geometry><box><size>60 0.50 1.20</size></box></geometry>
+          <material><diffuse>0.45 0.20 0.06 1</diffuse><ambient>0.14 0.05 0.01 1</ambient></material>
+        </visual>
+        <collision name="wall_bottom_collision">
+          <pose>0 -14.75 0.60 0 0 0</pose>
+          <geometry><box><size>60 0.50 1.20</size></box></geometry>
+        </collision>
+
+        <visual name="wall_left_outer">
+          <pose>-29.75 0 0.60 0 0 0</pose>
+          <geometry><box><size>0.50 30 1.20</size></box></geometry>
+          <material><diffuse>0.45 0.20 0.06 1</diffuse><ambient>0.14 0.05 0.01 1</ambient></material>
+        </visual>
+        <collision name="wall_left_outer_collision">
+          <pose>-29.75 0 0.60 0 0 0</pose>
+          <geometry><box><size>0.50 30 1.20</size></box></geometry>
+        </collision>
+
+        <!-- One shared divider; do not duplicate it for the two fields. -->
+        <visual name="wall_center_shared">
+          <pose>0 0 0.60 0 0 0</pose>
+          <geometry><box><size>0.50 30 1.20</size></box></geometry>
+          <material><diffuse>0.45 0.20 0.06 1</diffuse><ambient>0.14 0.05 0.01 1</ambient></material>
+        </visual>
+        <collision name="wall_center_shared_collision">
+          <pose>0 0 0.60 0 0 0</pose>
+          <geometry><box><size>0.50 30 1.20</size></box></geometry>
+        </collision>
+
+        <visual name="wall_right_outer">
+          <pose>29.75 0 0.60 0 0 0</pose>
+          <geometry><box><size>0.50 30 1.20</size></box></geometry>
+          <material><diffuse>0.45 0.20 0.06 1</diffuse><ambient>0.14 0.05 0.01 1</ambient></material>
+        </visual>
+        <collision name="wall_right_outer_collision">
+          <pose>29.75 0 0.60 0 0 0</pose>
+          <geometry><box><size>0.50 30 1.20</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+
+    <!--
+      Physical objects that follow the markers in gambar_lapangan.png.
+      The reference image is kept in images/ for documentation only. All
+      objects are static and use the same x/y mapping as that reference.
+    -->
+    <model name="field_boxes">
+      <static>true</static>
+      <link name="boxes_link">
+        <!-- Horizontal blue box, left lane. -->
+        <visual name="box_blue_left_outer">
+          <pose>-24.85 -8.78 0.31 0 0 0</pose>
+          <geometry><box><size>1.55 0.80 0.60</size></box></geometry>
+          <material><diffuse>0.05 0.25 0.95 1</diffuse><ambient>0.02 0.08 0.30 1</ambient></material>
+        </visual>
+        <collision name="box_blue_left_outer_collision">
+          <pose>-24.85 -8.78 0.31 0 0 0</pose>
+          <geometry><box><size>1.55 0.80 0.60</size></box></geometry>
+        </collision>
+
+        <!-- Horizontal green box, left lane. -->
+        <visual name="box_green_left_inner">
+          <pose>-22.05 -12.08 0.31 0 0 0</pose>
+          <geometry><box><size>1.35 0.75 0.60</size></box></geometry>
+          <material><diffuse>0.10 0.80 0.20 1</diffuse><ambient>0.03 0.25 0.05 1</ambient></material>
+        </visual>
+        <collision name="box_green_left_inner_collision">
+          <pose>-22.05 -12.08 0.31 0 0 0</pose>
+          <geometry><box><size>1.35 0.75 0.60</size></box></geometry>
+        </collision>
+
+        <!-- Brown box at the inner end of the left lane. -->
+        <visual name="box_brown_left_inner_end">
+          <pose>-4.47 -12.82 0.31 0 0 0</pose>
+          <geometry><box><size>1.35 2.40 0.60</size></box></geometry>
+          <material><diffuse>0.48 0.22 0.07 1</diffuse><ambient>0.15 0.06 0.02 1</ambient></material>
+        </visual>
+        <collision name="box_brown_left_inner_end_collision">
+          <pose>-4.47 -12.82 0.31 0 0 0</pose>
+          <geometry><box><size>1.35 2.40 0.60</size></box></geometry>
+        </collision>
+
+        <!-- Mirrored boxes for the right lane. -->
+        <visual name="box_blue_right_outer">
+          <pose>24.85 -8.78 0.31 0 0 0</pose>
+          <geometry><box><size>1.55 0.80 0.60</size></box></geometry>
+          <material><diffuse>0.05 0.25 0.95 1</diffuse><ambient>0.02 0.08 0.30 1</ambient></material>
+        </visual>
+        <collision name="box_blue_right_outer_collision">
+          <pose>24.85 -8.78 0.31 0 0 0</pose>
+          <geometry><box><size>1.55 0.80 0.60</size></box></geometry>
+        </collision>
+
+        <visual name="box_green_right_inner">
+          <pose>22.05 -12.08 0.31 0 0 0</pose>
+          <geometry><box><size>1.35 0.75 0.60</size></box></geometry>
+          <material><diffuse>0.10 0.80 0.20 1</diffuse><ambient>0.03 0.25 0.05 1</ambient></material>
+        </visual>
+        <collision name="box_green_right_inner_collision">
+          <pose>22.05 -12.08 0.31 0 0 0</pose>
+          <geometry><box><size>1.35 0.75 0.60</size></box></geometry>
+        </collision>
+
+        <visual name="box_brown_right_inner_end">
+          <pose>4.29 -12.82 0.31 0 0 0</pose>
+          <geometry><box><size>1.35 2.40 0.60</size></box></geometry>
+          <material><diffuse>0.48 0.22 0.07 1</diffuse><ambient>0.15 0.06 0.02 1</ambient></material>
+        </visual>
+        <collision name="box_brown_right_inner_end_collision">
+          <pose>4.29 -12.82 0.31 0 0 0</pose>
+          <geometry><box><size>1.35 2.40 0.60</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+
+    <model name="field_balls">
+      <static>true</static>
+      <link name="balls_link">
+        <!-- Green row at the top of each lane. -->
+        <visual name="ball_green_left_1"><pose>-17.35 8.87 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.10 0.85 0.15 1</diffuse><ambient>0.03 0.28 0.04 1</ambient></material></visual>
+        <collision name="ball_green_left_1_collision"><pose>-17.35 8.87 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_green_left_2"><pose>-15.54 8.87 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.10 0.85 0.15 1</diffuse><ambient>0.03 0.28 0.04 1</ambient></material></visual>
+        <collision name="ball_green_left_2_collision"><pose>-15.54 8.87 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_green_left_3"><pose>-13.66 8.87 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.10 0.85 0.15 1</diffuse><ambient>0.03 0.28 0.04 1</ambient></material></visual>
+        <collision name="ball_green_left_3_collision"><pose>-13.66 8.87 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_green_left_4"><pose>-11.91 8.87 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.10 0.85 0.15 1</diffuse><ambient>0.03 0.28 0.04 1</ambient></material></visual>
+        <collision name="ball_green_left_4_collision"><pose>-11.91 8.87 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_green_right_1"><pose>11.71 8.87 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.10 0.85 0.15 1</diffuse><ambient>0.03 0.28 0.04 1</ambient></material></visual>
+        <collision name="ball_green_right_1_collision"><pose>11.71 8.87 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_green_right_2"><pose>13.52 8.87 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.10 0.85 0.15 1</diffuse><ambient>0.03 0.28 0.04 1</ambient></material></visual>
+        <collision name="ball_green_right_2_collision"><pose>13.52 8.87 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_green_right_3"><pose>15.40 8.87 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.10 0.85 0.15 1</diffuse><ambient>0.03 0.28 0.04 1</ambient></material></visual>
+        <collision name="ball_green_right_3_collision"><pose>15.40 8.87 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_green_right_4"><pose>17.21 8.87 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.10 0.85 0.15 1</diffuse><ambient>0.03 0.28 0.04 1</ambient></material></visual>
+        <collision name="ball_green_right_4_collision"><pose>17.21 8.87 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+
+        <!-- Red row directly below the green row. -->
+        <visual name="ball_red_left_1"><pose>-17.42 7.06 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.90 0.05 0.04 1</diffuse><ambient>0.28 0.02 0.01 1</ambient></material></visual>
+        <collision name="ball_red_left_1_collision"><pose>-17.42 7.06 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_red_left_2"><pose>-15.60 7.06 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.90 0.05 0.04 1</diffuse><ambient>0.28 0.02 0.01 1</ambient></material></visual>
+        <collision name="ball_red_left_2_collision"><pose>-15.60 7.06 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_red_left_3"><pose>-13.72 7.06 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.90 0.05 0.04 1</diffuse><ambient>0.28 0.02 0.01 1</ambient></material></visual>
+        <collision name="ball_red_left_3_collision"><pose>-13.72 7.06 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_red_left_4"><pose>-11.91 7.13 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.90 0.05 0.04 1</diffuse><ambient>0.28 0.02 0.01 1</ambient></material></visual>
+        <collision name="ball_red_left_4_collision"><pose>-11.91 7.13 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_red_right_1"><pose>11.78 7.13 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.90 0.05 0.04 1</diffuse><ambient>0.28 0.02 0.01 1</ambient></material></visual>
+        <collision name="ball_red_right_1_collision"><pose>11.78 7.13 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_red_right_2"><pose>13.52 7.13 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.90 0.05 0.04 1</diffuse><ambient>0.28 0.02 0.01 1</ambient></material></visual>
+        <collision name="ball_red_right_2_collision"><pose>13.52 7.13 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_red_right_3"><pose>15.47 7.06 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.90 0.05 0.04 1</diffuse><ambient>0.28 0.02 0.01 1</ambient></material></visual>
+        <collision name="ball_red_right_3_collision"><pose>15.47 7.06 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_red_right_4"><pose>17.28 7.06 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.90 0.05 0.04 1</diffuse><ambient>0.28 0.02 0.01 1</ambient></material></visual>
+        <collision name="ball_red_right_4_collision"><pose>17.28 7.06 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+
+        <!-- Side markers on the outside of each lane. -->
+        <visual name="ball_outer_left_1"><pose>-26.28 3.31 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_outer_left_1_collision"><pose>-26.28 3.31 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_outer_left_2"><pose>-24.53 3.05 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_outer_left_2_collision"><pose>-24.53 3.05 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_outer_left_3"><pose>-27.82 -0.03 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_outer_left_3_collision"><pose>-27.82 -0.03 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_outer_left_4"><pose>-26.01 -0.10 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_outer_left_4_collision"><pose>-26.01 -0.10 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_outer_left_5"><pose>-27.95 -3.31 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_outer_left_5_collision"><pose>-27.95 -3.31 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_outer_left_6"><pose>-26.21 -2.98 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_outer_left_6_collision"><pose>-26.21 -2.98 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_outer_right_1"><pose>26.14 3.31 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_outer_right_1_collision"><pose>26.14 3.31 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_outer_right_2"><pose>24.40 3.05 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_outer_right_2_collision"><pose>24.40 3.05 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_outer_right_3"><pose>27.68 -0.03 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_outer_right_3_collision"><pose>27.68 -0.03 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_outer_right_4"><pose>25.87 -0.10 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_outer_right_4_collision"><pose>25.87 -0.10 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_outer_right_5"><pose>27.82 -3.31 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_outer_right_5_collision"><pose>27.82 -3.31 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_outer_right_6"><pose>26.07 -2.98 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_outer_right_6_collision"><pose>26.07 -2.98 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+
+        <!-- Side markers on the inside of each lane. -->
+        <visual name="ball_inner_left_1"><pose>-5.34 0.97 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_inner_left_1_collision"><pose>-5.34 0.97 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_inner_left_2"><pose>-3.59 0.64 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_inner_left_2_collision"><pose>-3.59 0.64 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_inner_left_3"><pose>-6.61 -2.04 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_inner_left_3_collision"><pose>-6.61 -2.04 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_inner_left_4"><pose>-4.85 -2.11 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_inner_left_4_collision"><pose>-4.85 -2.11 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_inner_left_5"><pose>-5.60 -5.32 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_inner_left_5_collision"><pose>-5.60 -5.32 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_inner_left_6"><pose>-3.79 -5.39 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_inner_left_6_collision"><pose>-3.79 -5.39 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_inner_right_1"><pose>5.20 0.97 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_inner_right_1_collision"><pose>5.20 0.97 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_inner_right_2"><pose>3.46 0.64 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_inner_right_2_collision"><pose>3.46 0.64 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_inner_right_3"><pose>6.48 -2.04 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_inner_right_3_collision"><pose>6.48 -2.04 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_inner_right_4"><pose>4.66 -2.11 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_inner_right_4_collision"><pose>4.66 -2.11 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_inner_right_5"><pose>5.47 -5.32 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_inner_right_5_collision"><pose>5.47 -5.32 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+        <visual name="ball_inner_right_6"><pose>3.66 -5.39 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry><material><diffuse>0.95 0.70 0.05 1</diffuse><ambient>0.30 0.18 0.01 1</ambient></material></visual>
+        <collision name="ball_inner_right_6_collision"><pose>3.66 -5.39 0.36 0 0 0</pose><geometry><sphere><radius>0.35</radius></sphere></geometry></collision>
+
+        <!-- Three small blue balls beside each brown inner-end box. -->
+        <visual name="ball_blue_left_box_1"><pose>-5.34 -11.95 0.31 0 0 0</pose><geometry><sphere><radius>0.30</radius></sphere></geometry><material><diffuse>0.03 0.28 0.95 1</diffuse><ambient>0.01 0.08 0.30 1</ambient></material></visual>
+        <collision name="ball_blue_left_box_1_collision"><pose>-5.34 -11.95 0.31 0 0 0</pose><geometry><sphere><radius>0.30</radius></sphere></geometry></collision>
+        <visual name="ball_blue_left_box_2"><pose>-5.34 -12.75 0.31 0 0 0</pose><geometry><sphere><radius>0.30</radius></sphere></geometry><material><diffuse>0.03 0.28 0.95 1</diffuse><ambient>0.01 0.08 0.30 1</ambient></material></visual>
+        <collision name="ball_blue_left_box_2_collision"><pose>-5.34 -12.75 0.31 0 0 0</pose><geometry><sphere><radius>0.30</radius></sphere></geometry></collision>
+        <visual name="ball_blue_left_box_3"><pose>-5.34 -13.70 0.31 0 0 0</pose><geometry><sphere><radius>0.30</radius></sphere></geometry><material><diffuse>0.03 0.28 0.95 1</diffuse><ambient>0.01 0.08 0.30 1</ambient></material></visual>
+        <collision name="ball_blue_left_box_3_collision"><pose>-5.34 -13.70 0.31 0 0 0</pose><geometry><sphere><radius>0.30</radius></sphere></geometry></collision>
+        <visual name="ball_blue_right_box_1"><pose>5.20 -11.95 0.31 0 0 0</pose><geometry><sphere><radius>0.30</radius></sphere></geometry><material><diffuse>0.03 0.28 0.95 1</diffuse><ambient>0.01 0.08 0.30 1</ambient></material></visual>
+        <collision name="ball_blue_right_box_1_collision"><pose>5.20 -11.95 0.31 0 0 0</pose><geometry><sphere><radius>0.30</radius></sphere></geometry></collision>
+        <visual name="ball_blue_right_box_2"><pose>5.20 -12.75 0.31 0 0 0</pose><geometry><sphere><radius>0.30</radius></sphere></geometry><material><diffuse>0.03 0.28 0.95 1</diffuse><ambient>0.01 0.08 0.30 1</ambient></material></visual>
+        <collision name="ball_blue_right_box_2_collision"><pose>5.20 -12.75 0.31 0 0 0</pose><geometry><sphere><radius>0.30</radius></sphere></geometry></collision>
+        <visual name="ball_blue_right_box_3"><pose>5.20 -13.70 0.31 0 0 0</pose><geometry><sphere><radius>0.30</radius></sphere></geometry><material><diffuse>0.03 0.28 0.95 1</diffuse><ambient>0.01 0.08 0.30 1</ambient></material></visual>
+        <collision name="ball_blue_right_box_3_collision"><pose>5.20 -13.70 0.31 0 0 0</pose><geometry><sphere><radius>0.30</radius></sphere></geometry></collision>
+      </link>
+    </model>
+
+    <light name="sun" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 50 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.3 0.2 -1</direction>
+    </light>
+  </world>
+</sdf>

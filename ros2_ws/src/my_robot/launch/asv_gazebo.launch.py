@@ -70,6 +70,14 @@ def generate_launch_description():
         parameters=[{"use_sim_time": True}],
     )
 
+    vision_node = Node(
+        package=package_name,
+        executable="asv_vision",
+        name="asv_vision",
+        output="screen",
+        parameters=[{"use_sim_time": True}],
+    )
+
     bridges = [
         ("clock_bridge", "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock"),
         ("cmd_vel_bridge", "/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist"),
@@ -104,6 +112,7 @@ def generate_launch_description():
             robot_state_publisher,
             spawn_robot,
             *bridge_nodes,
+            vision_node,
             mission_controller,
         ]
     )

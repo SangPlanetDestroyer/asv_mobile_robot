@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import math
+import json
 from enum import Enum
 
 import rclpy
@@ -52,6 +53,7 @@ class AsvMissionController(Node):
         self.declare_parameter("mission_timeout", 900.0)
         self.declare_parameter("imaging_hold_time", 3.0)
         self.declare_parameter("docking_hold_time", 4.0)
+        self.declare_parameter("require_vision_for_tasks", False)
 
         self.waypoints = self._pair_parameter("waypoints")
         self.surface_pose = self._pair_parameter("surface_imaging_pose")[0]
@@ -65,6 +67,7 @@ class AsvMissionController(Node):
         self.mission_timeout = self.get_parameter("mission_timeout").value
         self.imaging_hold_time = self.get_parameter("imaging_hold_time").value
         self.docking_hold_time = self.get_parameter("docking_hold_time").value
+        self.require_vision_for_tasks = self.get_parameter("require_vision_for_tasks").value
 
         self.state = MissionState.WAIT_FOR_SENSORS
         self.position = None
@@ -73,6 +76,8 @@ class AsvMissionController(Node):
         self.last_odom_time = None
         self.last_imu_time = None
         self.last_image_time = None
+        self.last_vision_time = None
+        self.vision_detections = {}
         self.mission_start_time = None
         self.state_start_time = None
         self.route_index = 0
@@ -84,6 +89,7 @@ class AsvMissionController(Node):
         self.create_subscription(Odometry, "/odom", self.odom_callback, 10)
         self.create_subscription(Imu, "/imu", self.imu_callback, 10)
         self.create_subscription(Image, "/camera/image_raw", self.image_callback, 10)
+        self.create_subscription(String, "/asv/vision/detections", self.vision_callback, 10)
         self.timer = self.create_timer(0.05, self.control_callback)
 
         self.get_logger().info(
@@ -117,6 +123,13 @@ class AsvMissionController(Node):
 
     def image_callback(self, _message):
         self.last_image_time = self.now()
+
+    def vision_callback(self, message):
+        try:
+            self.vision_detections = json.loads(message.data).get("colors", {})
+            self.last_vision_time = self.now()
+        except json.JSONDecodeError:
+            self.get_logger().warning("Menerima data vision yang tidak valid")
 
     def control_callback(self):
         current_time = self.now()
@@ -172,9 +185,9 @@ class AsvMissionController(Node):
                     self.route_index += 1
 
         elif self.state == MissionState.SURFACE_IMAGING:
-            self.handle_imaging(self.surface_pose, MissionState.UNDERWATER_IMAGING, current_time)
+            self.handle_imaging(self.surface_pose, "green", MissionState.UNDERWATER_IMAGING, current_time)
         elif self.state == MissionState.UNDERWATER_IMAGING:
-            self.handle_imaging(self.underwater_pose, MissionState.DOCKING, current_time)
+            self.handle_imaging(self.underwater_pose, "blue", MissionState.DOCKING, current_time)
         elif self.state == MissionState.DOCKING:
             self.handle_docking(current_time)
 
@@ -195,7 +208,7 @@ class AsvMissionController(Node):
         )
         self.cmd_pub.publish(command)
 
-    def handle_imaging(self, target, next_state, current_time):
+    def handle_imaging(self, target, color, next_state, current_time):
         if self.distance_to(target) > 0.7:
             self.follow_target(target)
             return
@@ -205,7 +218,10 @@ class AsvMissionController(Node):
             self.last_image_time is not None
             and current_time - self.last_image_time <= self.sensor_timeout * 2.0
         )
-        if image_is_fresh and current_time - self.state_start_time >= self.imaging_hold_time:
+        vision_is_fresh = self._vision_is_fresh(current_time)
+        target_is_visible = self._target_is_visible(color)
+        vision_ready = not self.require_vision_for_tasks or (vision_is_fresh and target_is_visible)
+        if image_is_fresh and vision_ready and current_time - self.state_start_time >= self.imaging_hold_time:
             self.set_state(next_state, current_time)
 
     def handle_docking(self, current_time):
@@ -213,8 +229,17 @@ class AsvMissionController(Node):
             self.follow_target(self.docking_pose)
             return
         self.publish_stop()
-        if current_time - self.state_start_time >= self.docking_hold_time:
+        vision_ready = not self.require_vision_for_tasks or (
+            self._vision_is_fresh(current_time) and self._target_is_visible("blue")
+        )
+        if vision_ready and current_time - self.state_start_time >= self.docking_hold_time:
             self.set_state(MissionState.FINISHED, current_time)
+
+    def _vision_is_fresh(self, current_time):
+        return self.last_vision_time is not None and current_time - self.last_vision_time <= 1.0
+
+    def _target_is_visible(self, color):
+        return bool(self.vision_detections.get(color))
 
     def distance_to(self, target):
         return math.hypot(target[0] - self.position[0], target[1] - self.position[1])

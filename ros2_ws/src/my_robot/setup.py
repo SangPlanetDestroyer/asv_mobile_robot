@@ -9,7 +9,7 @@ setup(
     name=package_name,
     version="0.1.0",
     packages=[],
-    py_modules=["asv_mission_controller"],
+    py_modules=["asv_mission_controller", "asv_vision"],
     data_files=[
         (
             "share/ament_index/resource_index/packages",
@@ -31,6 +31,7 @@ setup(
     entry_points={
         "console_scripts": [
             "asv_mission_controller = asv_mission_controller:main",
+            "asv_vision = asv_vision:main",
         ],
     },
     zip_safe=True,

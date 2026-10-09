@@ -1,4 +1,22 @@
-Ini merupakan codebase untuk ujian tengah semester dimana membuat gazebo berdasarkan perlombaan asv dengan menggunakan mobile robot.
+# Simulasi Mobile Robot Berbasis Lomba ASV
+
+Ini merupakan codebase untuk ujian tengah semester yang membuat simulasi
+Gazebo dari robot mobile dengan aturan misi dan tata letak lapangan yang
+terinspirasi dari perlombaan ASV. Tujuan utama proyek ini bukan membuat model
+kapal ASV yang memiliki dinamika air, melainkan menguji navigasi otonom,
+waypoint, imaging, docking, monitoring, dan fail-safe pada platform mobile
+robot di arena yang serupa dengan arena lomba ASV.
+
+Karena platform yang digunakan adalah robot beroda, simulasi ini menggunakan
+ground plane dan model diff-drive. Istilah ASV pada nama package, script, dan
+controller merujuk pada aturan serta skenario misi yang diadaptasi, bukan pada
+representasi fisik kapal atau lingkungan air secara penuh.
+
+Ke depannya, proyek ini juga diarahkan untuk dikembangkan menjadi robot mobile
+nyata dan diuji pada lapangan fisik dengan rintangan serta urutan misi yang
+serupa dengan arena ASV. Perlombaan ASV menjadi inspirasi utama dalam
+merancang misi, tata letak lapangan, objek rintangan, imaging, docking, dan
+keselamatan robot.
 
 ## World Gazebo
 

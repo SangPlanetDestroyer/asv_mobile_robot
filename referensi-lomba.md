@@ -3,6 +3,16 @@
 Dokumen ini merangkum informasi sub-kategori **Autonomous Surface Vessel
 (ASV)** dari `materi-pembelajaran/Panduan-KKI-2026_Final_1-1.PDF`.
 
+Dalam proyek ini, informasi tersebut digunakan sebagai acuan aturan misi,
+urutan tugas, rintangan, dan tata letak arena untuk robot mobile. Simulasi
+tidak dimaksudkan sebagai model kapal ASV dengan dinamika air, gaya apung,
+arus, atau gelombang.
+
+Roadmap proyek mencakup pembuatan robot mobile nyata dan lapangan fisik dengan
+karakteristik yang serupa dengan arena ASV. Dengan demikian, lomba ASV menjadi
+inspirasi pengembangan sistem secara bertahap, mulai dari simulasi, pengujian
+lapangan, hingga implementasi robot nyata.
+
 ## Gambaran Umum
 
 - ASV merupakan sub-kategori Kontes Kapal Indonesia (KKI) 2026.

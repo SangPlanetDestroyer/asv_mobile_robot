@@ -23,14 +23,23 @@ Model mobile robot hasil migrasi berada di `ros2_ws/src/my_robot`. Model ini
 memakai dua roda penggerak, dua caster, IMU, dan kamera yang menghadap ke depan.
 Marker AprilTag/ArUco sudah dihapus dari model.
 
-Build dan jalankan simulasi dengan:
+Build dan jalankan simulasi dengan terminal `zsh`:
 
-```bash
+```zsh
 cd ros2_ws
-source /opt/ros/jazzy/setup.bash
+unset AMENT_PREFIX_PATH COLCON_PREFIX_PATH COLCON_CURRENT_PREFIX
+source /opt/ros/jazzy/setup.zsh
 colcon build --packages-select my_robot
-source install/setup.bash
+source install/setup.zsh
 ros2 launch my_robot asv_gazebo.launch.py
+```
+
+Jika `ros2 launch` menghasilkan error `invalid choice: 'launch'`, pasang ekstensi
+launch ROS 2 terlebih dahulu:
+
+```zsh
+sudo apt update
+sudo apt install ros-jazzy-ros2launch
 ```
 
 Topic kamera yang tersedia adalah `/camera/image_raw` dan

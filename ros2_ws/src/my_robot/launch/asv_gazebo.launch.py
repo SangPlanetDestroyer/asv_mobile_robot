@@ -62,6 +62,14 @@ def generate_launch_description():
         ],
     )
 
+    mission_controller = Node(
+        package=package_name,
+        executable="asv_mission_controller",
+        name="asv_mission_controller",
+        output="screen",
+        parameters=[{"use_sim_time": True}],
+    )
+
     bridges = [
         ("clock_bridge", "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock"),
         ("cmd_vel_bridge", "/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist"),
@@ -90,5 +98,12 @@ def generate_launch_description():
     ]
 
     return LaunchDescription(
-        [gazebo_resource_path, gz_sim, robot_state_publisher, spawn_robot, *bridge_nodes]
+        [
+            gazebo_resource_path,
+            gz_sim,
+            robot_state_publisher,
+            spawn_robot,
+            *bridge_nodes,
+            mission_controller,
+        ]
     )

@@ -9,6 +9,7 @@ setup(
     name=package_name,
     version="0.1.0",
     packages=[],
+    py_modules=["asv_mission_controller"],
     data_files=[
         (
             "share/ament_index/resource_index/packages",
@@ -27,6 +28,11 @@ setup(
         (os.path.join("share", package_name, "worlds"), glob("worlds/*.world")),
     ],
     install_requires=["setuptools"],
+    entry_points={
+        "console_scripts": [
+            "asv_mission_controller = asv_mission_controller:main",
+        ],
+    },
     zip_safe=True,
     maintainer="ekonawa",
     maintainer_email="ekonawa@example.com",
